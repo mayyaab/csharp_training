@@ -59,9 +59,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
+    <Compile Include="UnitTest1.cs" />
+=======
     <Compile Include="UnitTest2.cs" />
+>>>>>>> d2e7440e6decc7a799bc15f3501a6e61af6b9741
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
