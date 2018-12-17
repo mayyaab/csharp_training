@@ -17,12 +17,16 @@ namespace WebAddressbookTests
         {
         }
 
-        public void AddNewContact()
+        public ContactHelper Create(ContactData contact)
         {
-            driver.FindElement(By.LinkText("add new")).Click();
+            meneger.Navigator.GoToAddNewContact();
+            FillContactForm(contact);
+            SubmitAccountCreation();
+            return this;
         }
 
-        public void FillContactForm(ContactData contact)
+
+        public ContactHelper FillContactForm(ContactData contact)
         {
             driver.FindElement(By.Name("firstname")).Click();
             driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
@@ -79,11 +83,13 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("phone2")).SendKeys(contact.Phone2);
             driver.FindElement(By.Name("notes")).Click();
             driver.FindElement(By.Name("notes")).SendKeys(contact.Notes);
+            return this;
         }
 
-        public void SubmitAccountCreation()
+        public ContactHelper SubmitAccountCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            return this;
         }
     }
 }
