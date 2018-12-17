@@ -13,9 +13,8 @@ namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
-        public ContactHelper(IWebDriver driver) : base(driver)
+        public ContactHelper(ApplicationMeneger meneger) : base(meneger)
         {
-            this.driver = driver;
         }
 
         public void AddNewContact()

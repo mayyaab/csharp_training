@@ -14,10 +14,9 @@ namespace WebAddressbookTests
     {
 
 
-    public LoginHelper(IWebDriver driver)
-        :base(driver)
+    public LoginHelper(ApplicationMeneger meneger)
+        :base(meneger)
     {
-        this.driver = driver;
     }
 
     public void Login(AccountData account)
