@@ -38,7 +38,7 @@ namespace WebAddressbookTests
             contact.Aday = "1";
             contact.Amonth = "June";
             contact.Ayear = "2000";
-            contact.Newgroup = "zzz";
+            contact.Newgroup = "aaa";
             contact.Address2 = "34";
             contact.Phone2 = "65";
             contact.Notes = "234";
