@@ -35,10 +35,10 @@ namespace WebAddressbookTests
             ReturnToContactPage();
             return this;
         }
-        public ContactHelper Remove(string v)
+        public ContactHelper Remove()
         {
             meneger.Navigator.GoToHomePage();
-            SelectContact(v);
+            SelectContact();
             Delete();
             AcceptAllert();
             return this;
@@ -193,7 +193,7 @@ namespace WebAddressbookTests
             driver.SwitchTo().Alert().Accept();
             return this;
         }
-        public ContactHelper SelectContact(string id)
+        public ContactHelper SelectContact()
         {
             driver.FindElement(By.XPath("(//input[@name='selected[]'])")).Click();
             return this;
