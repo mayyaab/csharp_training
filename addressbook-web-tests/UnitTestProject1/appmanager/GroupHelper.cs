@@ -12,7 +12,6 @@ namespace WebAddressbookTests
 {
     public class GroupHelper : HelperBase
     {
-
         public GroupHelper(ApplicationMeneger manager) : base(manager)
         {
 
@@ -28,9 +27,17 @@ namespace WebAddressbookTests
             return this;
         }
 
+
         public GroupHelper Modify(int p, GroupData newData)
         {
             meneger.Navigator.GoToGroupPage();
+
+            if (!IsElementPresent(By.Name("selected[]")))
+            {
+                GroupData groupForMod = new GroupData("For del");
+                Create(groupForMod);
+            }
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
             SelectGroup(p);
             InitGroupModification();
             FillGroupForm(newData);
@@ -42,6 +49,12 @@ namespace WebAddressbookTests
         public GroupHelper Remove(int p)
         {
             meneger.Navigator.GoToGroupPage();
+
+            if (!IsElementPresent(By.Name("selected[]")))
+            {
+                GroupData groupForMod = new GroupData("For del");
+                Create(groupForMod);
+            }
             SelectGroup(p);
             RemoveGroup();
             ReturnsToGroupPage();
@@ -55,14 +68,13 @@ namespace WebAddressbookTests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
             return this;
         }
+
         public GroupHelper SelectGroup(int index)
         {
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
@@ -88,7 +100,6 @@ namespace WebAddressbookTests
         public GroupHelper ReturnToGroupPage()
         {
             driver.FindElement(By.LinkText("group page")).Click();
-            driver.FindElement(By.LinkText("Logout")).Click();
             return this;
         }
         public GroupHelper SubmitGroupModification()
@@ -102,5 +113,6 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("edit")).Click();
             return this;
         }
+
     }
 }

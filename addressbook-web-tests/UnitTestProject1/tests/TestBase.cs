@@ -13,17 +13,9 @@ namespace WebAddressbookTests
         protected ApplicationMeneger app;
 
         [SetUp]
-        public void SetupTest()
+        public void SetupApplicationManager()
         {
-            app = new ApplicationMeneger();
-            app.Navigator.GoToHomePage();
-            app.Auth.Login(new AccountData("admin", "secret"));
-        }
-
-        [TearDown]  
-        public void TeardownTest()
-        {
-            app.Stop();
+            app = ApplicationMeneger.GetInstance();
         }
 
     }

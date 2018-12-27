@@ -15,6 +15,38 @@ namespace WebAddressbookTests
         protected ApplicationMeneger meneger;
         protected IWebDriver driver;
 
+        public void Type(By locator, string text)
+        {
+            if (text != null)
+            {
+                driver.FindElement(locator).Clear();
+                driver.FindElement(locator).SendKeys(text);
+            }
+        }
+
+        public bool IsElementPresent(By by)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+
+        public void Select(By locator, string text)
+        {
+            if (text != null)
+            {
+                driver.FindElement(locator).Click();
+                new SelectElement(driver.FindElement(locator)).SelectByText(text);
+                driver.FindElement(locator).Click();
+            }
+        }
+
         public HelperBase(ApplicationMeneger meneger)
         {
             this.meneger = meneger;
