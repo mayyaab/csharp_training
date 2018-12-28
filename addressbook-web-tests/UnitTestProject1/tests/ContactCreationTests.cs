@@ -42,7 +42,12 @@ namespace WebAddressbookTests
             contact.Address2 = "34";
             contact.Phone2 = "65";
             contact.Notes = "234";
+
+//            List<ContactData> oldContact = app.Contacts.GetContactList();
+
             app.Contacts.Create(contact);
+
+
         }
     }
 }
