@@ -24,11 +24,11 @@ namespace WebAddressbookTests
             meneger.Navigator.GoToAddNewContact();
             FillContactForm(contact);
             SubmitAccountCreation();
-            ReturnToContactPage();
+            ReturnToHomePage();
             return this;
         }
 
-        public ContactHelper Modify(int v, ContactData newDataC)
+        public ContactHelper Modify(ContactData newDataC)
         {
             meneger.Navigator.GoToHomePage();
             if (!IsElementPresent(By.Name("selected[]")))
@@ -37,14 +37,14 @@ namespace WebAddressbookTests
                 Create(contactForMod);
             }
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
-            InitContactModification(v);
+            InitContactModification();
             FillContactForm(newDataC);
             SubmitContactModification();
             ReturnToContactPage();
             return this;
         }
 
-        public ContactHelper Remove()
+        public ContactHelper Remove(int p)
         {
             meneger.Navigator.GoToHomePage();
 
@@ -54,11 +54,13 @@ namespace WebAddressbookTests
                 Create(contactForMod);
             }
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
-            SelectContact();
+            SelectContact(p);
             Delete();
             AcceptAllert();
+            ReturnToHomePage();
             return this;
         }
+
 
         public ContactHelper Delete()
         {
@@ -73,15 +75,22 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper ReturnToHomePage()
+        {
+            driver.FindElement(By.XPath("//a[contains(text(),'home')]")).Click();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
+            return this;
+        }
+
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
             return this;
         }
 
-        public ContactHelper InitContactModification(int id)
+        public ContactHelper InitContactModification()
         {
-            driver.FindElement(By.XPath("//a[@href='edit.php?id="+id+"']")).Click();
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[4]/form[2]/table[1]/tbody[1]/tr[2]/td[8]/a[1]")).Click();
             return this;
         }
 
@@ -127,10 +136,29 @@ namespace WebAddressbookTests
             driver.SwitchTo().Alert().Accept();
             return this;
         }
-        public ContactHelper SelectContact()
+        public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
             return this;
+        }
+
+        public List<ContactData> GetContactsList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            meneger.Navigator.GoToHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//table//tbody//tr//td[text()][position()=1 or position()=2]"));
+
+            var arrayElements = elements.AsEnumerable().ToArray();
+
+            for (int index=0; index<arrayElements.Length; index+=2)
+            {
+                var FirstLast = new ContactData(arrayElements[index+1].Text);
+                FirstLast.Lastname = arrayElements[index].Text;
+                contacts.Add(FirstLast);
+            }
+
+            return contacts;
+
         }
     }
 }

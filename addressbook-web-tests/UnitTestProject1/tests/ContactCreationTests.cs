@@ -6,6 +6,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using System.Collections.Generic;
 
 
 namespace WebAddressbookTests
@@ -43,11 +44,16 @@ namespace WebAddressbookTests
             contact.Phone2 = "65";
             contact.Notes = "234";
 
-//            List<ContactData> oldContact = app.Contacts.GetContactList();
+            List<ContactData> oldContact = app.Contacts.GetContactsList();
 
             app.Contacts.Create(contact);
 
+            List<ContactData> newContact = app.Contacts.GetContactsList();
 
+            oldContact.Add(contact);
+            oldContact.Sort();
+            newContact.Sort();
+            Assert.AreEqual(oldContact, newContact);
         }
     }
 }

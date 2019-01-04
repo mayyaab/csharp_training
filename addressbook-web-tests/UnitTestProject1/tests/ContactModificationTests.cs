@@ -14,8 +14,8 @@ namespace WebAddressbookTests.tests
         [Test]
         public void ContactModificationTest()
         {
-            ContactData newDataC = new ContactData("zzz");
-            newDataC.Lastname = "bbb";
+            ContactData newDataC = new ContactData("990");
+            newDataC.Lastname = "765";
             newDataC.Middlename = "ccc";
             newDataC.Nickname = "ddd";
             newDataC.Title = "eee";
@@ -40,7 +40,18 @@ namespace WebAddressbookTests.tests
             newDataC.Phone2 = "65";
             newDataC.Notes = "234";
 
-            app.Contacts.Modify(46, newDataC);
+            List<ContactData> oldContact = app.Contacts.GetContactsList();
+
+            app.Contacts.Modify(newDataC);
+
+            List<ContactData> newContact = app.Contacts.GetContactsList();
+
+            oldContact[0].Firstname = newDataC.Firstname;
+            oldContact[0].Lastname = newDataC.Lastname;
+
+            oldContact.Sort();
+            newContact.Sort();
+            Assert.AreEqual(oldContact, newContact);
         }
     }
 }
