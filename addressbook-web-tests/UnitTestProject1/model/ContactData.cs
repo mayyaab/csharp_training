@@ -52,6 +52,7 @@ namespace WebAddressbookTests
             }
             var isEqual = Firstname == other.Firstname && Lastname == other.Lastname;
             return isEqual;
+            //return Firstname == other.Firstname;
         }
 
 
@@ -62,6 +63,7 @@ namespace WebAddressbookTests
                    
         }
 
+
         public int CompareTo(ContactData other)
         {
             if (Object.ReferenceEquals(other, null))
@@ -69,6 +71,10 @@ namespace WebAddressbookTests
                 return 1;
             }
 
+            if (Firstname.CompareTo(other.Firstname) == 0)
+            {
+                return Lastname.CompareTo(other.Firstname);
+            }
             return Firstname.CompareTo(other.Firstname);
         }
 
