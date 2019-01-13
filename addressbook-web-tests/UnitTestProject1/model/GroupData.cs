@@ -10,13 +10,11 @@ namespace WebAddressbookTests
     //клас GroupData наследует IEquatable (его можно сравнивать с другими объектами типо GroupData)
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
-        private string name;
-        private string header = "";
-        private string footer = "";
+
 
         public GroupData(string name)
         {
-            this.name = name;
+            Name = name;
         }
 
         //функиция сравнения. стандартный метод
@@ -56,46 +54,12 @@ namespace WebAddressbookTests
             return Name.CompareTo(other.Name);
         }
 
-        public String Name
-        {
-            get
-            {
-                return name;
+        public string Name { get; set; }
 
-            }
-            set
-            {
-                name = value;
+        public string Header { get; set; }
 
-            }
-        }
+        public string Footer { get; set; }
 
-        public string Header
-        {
-            get
-            {
-                return header;
-
-            }
-            set
-            {
-                header = value;
-
-            }
-        }
-
-        public String Footer
-        {
-            get
-            {
-                return footer;
-
-            }
-            set
-            {
-                footer = value;
-
-            }
-        }
+        public string Id { get; set; }
     }
 }
