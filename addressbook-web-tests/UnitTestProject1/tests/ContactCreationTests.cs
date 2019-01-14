@@ -48,6 +48,8 @@ namespace WebAddressbookTests
 
             app.Contacts.Create(contact);
 
+            Assert.AreEqual(oldContact.Count+1, app.Contacts.GetContactCount());
+
             List<ContactData> newContact = app.Contacts.GetContactsList();
 
             oldContact.Add(contact);

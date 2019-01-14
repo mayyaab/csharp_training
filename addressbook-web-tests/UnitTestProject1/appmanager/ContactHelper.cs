@@ -58,7 +58,7 @@ namespace WebAddressbookTests
             Delete();
             AcceptAllert();
             ReturnToHomePage();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             return this;
         }
 
@@ -66,6 +66,7 @@ namespace WebAddressbookTests
         public ContactHelper Delete()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -86,6 +87,7 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -130,6 +132,7 @@ namespace WebAddressbookTests
         public ContactHelper SubmitAccountCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            contactCache = null;
             return this;
         }
         public ContactHelper AcceptAllert()
@@ -143,23 +146,31 @@ namespace WebAddressbookTests
             return this;
         }
 
+        private List<ContactData> contactCache = null;
+
         public List<ContactData> GetContactsList()
         {
-            List<ContactData> contacts = new List<ContactData>();
-            meneger.Navigator.GoToHomePage();
-            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//table//tbody//tr//td[text()][position()=1 or position()=2]"));
-
-            var arrayElements = elements.AsEnumerable().ToArray();
-
-            for (int index=0; index<arrayElements.Length; index+=2)
+            if (contactCache == null)
             {
-                var FirstLast = new ContactData(arrayElements[index+1].Text);
-                FirstLast.Lastname = arrayElements[index].Text;
-                contacts.Add(FirstLast);
+                contactCache = new List<ContactData>();
+                meneger.Navigator.GoToHomePage();
+                ICollection<IWebElement> elements = driver.FindElements(By.XPath("//table//tbody//tr//td[text()][position()=1 or position()=2]"));
+
+                var arrayElements = elements.AsEnumerable().ToArray();
+
+                for (int index = 0; index < arrayElements.Length; index += 2)
+                {
+                    var FirstLast = new ContactData(arrayElements[index + 1].Text);
+                    FirstLast.Lastname = arrayElements[index].Text;
+                    contactCache.Add(FirstLast);
+                }
             }
+            return new List<ContactData>(contactCache);
+        }
 
-            return contacts;
-
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.XPath("//table//tbody//tr//td[text()][1]")).Count;
         }
     }
 }
