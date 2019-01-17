@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WebAddressbookTests
@@ -18,6 +19,7 @@ namespace WebAddressbookTests
         private string home;
         private string mobile;
         private string work;
+        private string allPhones;
         private string fax;
         private string email;
         private string email2;
@@ -36,7 +38,8 @@ namespace WebAddressbookTests
 
         public ContactData(string firstname)
         {
-            this.firstname = firstname;
+            Firstname = firstname;
+            //Lastname = lastname;
         }
 
         public bool Equals(ContactData other)
@@ -78,47 +81,14 @@ namespace WebAddressbookTests
             return Firstname.CompareTo(other.Firstname);
         }
 
-        public String Firstname
-        {
-            get
-            {
-                return firstname;
+        public String Firstname { get; set; }
 
-            }
-            set
-            {
-                firstname = value;
 
-            }
-        }
+        public String Middlename { get; set; }
 
-        public String Middlename
-        {
-            get
-            {
-                return middlename;
 
-            }
-            set
-            {
-                middlename = value;
+        public String Lastname { get; set; }
 
-            }
-        }
-
-        public String Lastname
-        {
-            get
-            {
-                return lastname;
-
-            }
-            set
-            {
-                lastname = value;
-
-            }
-        }
 
         public String Nickname
         {
@@ -162,60 +132,47 @@ namespace WebAddressbookTests
             }
         }
 
-        public String Address
+        public String Address { get; set; }
+
+
+        public String Home { get; set; }
+
+
+        public String Mobile { get; set; }
+
+
+        public String Work { get; set; }
+
+        public String AllPhones
         {
             get
             {
-                return address;
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (CleanUp(Home) + CleanUp(Mobile) + CleanUp(Work)).Trim();
+                }
 
             }
             set
             {
-                address = value;
+                allPhones = value;
 
             }
         }
 
-        public String Home
+        private string CleanUp(string phone)
         {
-            get
+            if (phone == null || phone == "")
             {
-                return home;
-
+                return "";
             }
-            set
-            {
-                home = value;
 
-            }
-        }
-
-        public String Mobile
-        {
-            get
-            {
-                return mobile;
-
-            }
-            set
-            {
-                mobile = value;
-
-            }
-        }
-
-        public String Work
-        {
-            get
-            {
-                return work;
-
-            }
-            set
-            {
-                work = value;
-
-            }
+            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+            //return phone.Replace(" ", "").Replace("00", "+").Replace("-", "").Replace("(", "").Replace(")", "")+"\r\n";
         }
 
         public String Fax

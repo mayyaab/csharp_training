@@ -30,6 +30,8 @@ namespace WebAddressbookTests
                 return true;
             }
             //проверка по смыслу
+            //при вызове метода Eqals можно указатьспособ сравнения, например без учета регистра
+            //StringComparison.Ordinal
             return Name == other.Name;
         }
 

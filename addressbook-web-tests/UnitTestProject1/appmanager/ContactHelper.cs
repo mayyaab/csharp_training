@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -28,6 +29,8 @@ namespace WebAddressbookTests
             return this;
         }
 
+
+
         public ContactHelper Modify(ContactData newDataC)
         {
             meneger.Navigator.GoToHomePage();
@@ -36,8 +39,9 @@ namespace WebAddressbookTests
                 ContactData contactForMod = new ContactData("For del");
                 Create(contactForMod);
             }
+
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
-            InitContactModification();
+            InitContactModification(0);
             FillContactForm(newDataC);
             SubmitContactModification();
             ReturnToContactPage();
@@ -53,6 +57,7 @@ namespace WebAddressbookTests
                 ContactData contactForMod = new ContactData("For del");
                 Create(contactForMod);
             }
+
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
             SelectContact(p);
             Delete();
@@ -91,10 +96,13 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactModification()
+        public void InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[4]/form[2]/table[1]/tbody[1]/tr[2]/td[8]/a[1]")).Click();
-            return this;
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[7]
+                .FindElement(By.TagName("a")).Click();
+            //driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[4]/form[2]/table[1]/tbody[1]/tr[2]/td[8]/a[1]")).Click();
+            //return this;
         }
 
         public ContactHelper FillContactForm(ContactData contact)
@@ -115,7 +123,7 @@ namespace WebAddressbookTests
             Type(By.Name("email2"), contact.Email2);
             Type(By.Name("email3"), contact.Email3);
             Type(By.Name("homepage"), contact.Homepage);
-            Select(By.Name("bday"),contact.Bday);
+            Select(By.Name("bday"), contact.Bday);
             Select(By.Name("bmonth"), contact.Bmonth);
             Type(By.Name("byear"), contact.Byear);
             Select(By.Name("aday"), contact.Aday);
@@ -135,11 +143,13 @@ namespace WebAddressbookTests
             contactCache = null;
             return this;
         }
+
         public ContactHelper AcceptAllert()
         {
             driver.SwitchTo().Alert().Accept();
             return this;
         }
+
         public ContactHelper SelectContact(int index)
         {
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
@@ -154,7 +164,8 @@ namespace WebAddressbookTests
             {
                 contactCache = new List<ContactData>();
                 meneger.Navigator.GoToHomePage();
-                ICollection<IWebElement> elements = driver.FindElements(By.XPath("//table//tbody//tr//td[text()][position()=1 or position()=2]"));
+                ICollection<IWebElement> elements =
+                    driver.FindElements(By.XPath("//table//tbody//tr//td[text()][position()=1 or position()=2]"));
 
                 var arrayElements = elements.AsEnumerable().ToArray();
 
@@ -165,12 +176,60 @@ namespace WebAddressbookTests
                     contactCache.Add(FirstLast);
                 }
             }
+
             return new List<ContactData>(contactCache);
         }
 
         public int GetContactCount()
         {
             return driver.FindElements(By.XPath("//table//tbody//tr//td[text()][1]")).Count;
+        }
+
+        public ContactData GetContactInformationFromEditForm(int index)
+        {
+            meneger.Navigator.GoToHomePage();
+            InitContactModification(0);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+
+            return new ContactData(firstName)
+            {
+                Lastname = lastName,
+                Address = address,
+                Home = homePhone,
+                Mobile = mobilePhone,
+                Work = workPhone
+            };
+        }
+
+        public ContactData GetContactInformationFromTable(int index)
+        {
+            meneger.Navigator.GoToHomePage();
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"));
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string allPhones = cells[5].Text;
+            return new ContactData(firstName)
+            {
+                Lastname = lastName,
+                Address = address,
+                AllPhones = allPhones,
+
+            };
+        }
+
+        public int GetNumberOfSearchResult()
+        {
+            meneger.Navigator.GoToHomePage();
+            string text = driver.FindElement(By.TagName("label")).Text;
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value);
         }
     }
 }
