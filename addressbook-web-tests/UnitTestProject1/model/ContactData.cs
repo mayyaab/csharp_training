@@ -20,6 +20,7 @@ namespace WebAddressbookTests
         private string mobile;
         private string work;
         private string allPhones;
+        private string allEmails;
         private string fax;
         private string email;
         private string email2;
@@ -164,16 +165,60 @@ namespace WebAddressbookTests
             }
         }
 
-        private string CleanUp(string phone)
+        public String AllEmails
         {
-            if (phone == null || phone == "")
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+                else
+                {
+                    return (CleanUp(Email) + CleanUp(Email2) + CleanUp(Email3)).Trim();
+                }
+
+            }
+            set
+            {
+                allEmails = value;
+
+            }
+        }
+
+        private string CleanUp(string x)
+        {
+            if (x == null || x == "" )
             {
                 return "";
             }
 
-            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
-            //return phone.Replace(" ", "").Replace("00", "+").Replace("-", "").Replace("(", "").Replace(")", "")+"\r\n";
+            //return Regex.Replace(x, "[ -()]", "") + "\r\n";
+            return x.Replace(" ", "").Replace("00", "+").Replace("-", "").Replace("(", "").Replace(")", "")+"\r\n";
         }
+
+       /*private string CleanUpP(string phone)
+       {
+           if (phone == null || phone == "")
+           {
+               return "";
+           }
+
+           //return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+           return phone.Replace(" ", "").Replace("00", "+").Replace("-", "").Replace("(", "").Replace(")", "")+"\r\n";
+       }
+
+        private string CleanUpE(string emai)
+        {
+            if (emai == null || emai == "")
+            {
+                return "";
+            }
+
+            return Regex.Replace(emai, "[ -()]", "") + "\r\n";
+            //return phone.Replace(" ", "").Replace("00", "+").Replace("-", "").Replace("(", "").Replace(")", "")+"\r\n";
+        }*/
+
 
         public String Fax
         {
