@@ -73,7 +73,10 @@ namespace WebAddressbookTests
                    
         }
 
-
+        public override string ToString()
+        {
+            return "firstname=" + Firstname + "\nlastname= " + Lastname + "\nmiddlname=" + Middlename;
+        }
         public int CompareTo(ContactData other)
         {
             if (Object.ReferenceEquals(other, null))
