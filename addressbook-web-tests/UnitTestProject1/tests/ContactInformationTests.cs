@@ -31,19 +31,19 @@ namespace WebAddressbookTests
 
         }
 
-       /* [Test]
-        public void TestContactInformaionFromView()
+        [Test]
+        public void TestContactInformaionFromViewForm()
         {
-            ContactData fromView = app.Contacts.GetContactInformationFromView(0);
+            ContactData fromView = app.Contacts.GetContactInformationFromViewForm(0);
             ContactData fromForm = app.Contacts.GetContactInformationFromEditForm(0);
 
             Assert.AreEqual(fromView, fromForm);
-            Assert.AreEqual(fromView.Lastname, fromForm.Lastname);
-            Assert.AreEqual(fromView.Address, fromForm.Address);
-            Assert.AreEqual(fromView.AllPhones, fromForm.AllPhones);
-
+            Assert.AreEqual(fromView.FML, fromForm.FML);
+            Assert.AreEqual(fromView.Nickname, fromForm.Nickname);
+            Assert.AreEqual(fromView.Title, fromForm.Title);
+            Assert.AreEqual(fromView.Company, fromForm.Company);
             // verifications
 
-        }*/
+        }
     }
 }

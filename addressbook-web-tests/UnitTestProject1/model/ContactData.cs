@@ -12,6 +12,7 @@ namespace WebAddressbookTests
         private string firstname;
         private string middlename;
         private string lastname;
+        private string fML;
         private string nickname;
         private string title;
         private string company;
@@ -41,6 +42,11 @@ namespace WebAddressbookTests
         {
             Firstname = firstname;
             //Lastname = lastname;
+        }
+
+        public ContactData()
+        {
+
         }
 
         public bool Equals(ContactData other)
@@ -89,6 +95,29 @@ namespace WebAddressbookTests
 
 
         public String Lastname { get; set; }
+
+        public String FML
+        {
+            get
+            {
+                if (fML != null)
+                {
+                    return fML;
+                }
+                else
+                {
+                    //return $"{Firstname} {Middlename} {Lastname}";
+                    return Firstname + " " + Middlename + " " + Lastname;
+                }
+
+            }
+
+            set
+            {
+                fML = value;
+
+            }
+        }
 
 
         public String Nickname
@@ -164,6 +193,7 @@ namespace WebAddressbookTests
 
             }
         }
+
 
         public String AllEmails
         {

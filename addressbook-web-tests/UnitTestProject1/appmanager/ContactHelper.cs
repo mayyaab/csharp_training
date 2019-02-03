@@ -105,6 +105,13 @@ namespace WebAddressbookTests
             //return this;
         }
 
+        public void InitContactView(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+       }
+
         public ContactHelper FillContactForm(ContactData contact)
         {
             Type(By.Name("firstname"), contact.Firstname);
@@ -156,6 +163,7 @@ namespace WebAddressbookTests
             return this;
         }
 
+        private const string NameToFind = "//select[@name='amonth']";
         private List<ContactData> contactCache = null;
 
         public List<ContactData> GetContactsList()
@@ -190,7 +198,11 @@ namespace WebAddressbookTests
             meneger.Navigator.GoToHomePage();
             InitContactModification(0);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string middleName = driver.FindElement(By.Name("middlename")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string nickName = driver.FindElement(By.Name("nickname")).GetAttribute("value");
+            string company = driver.FindElement(By.Name("company")).GetAttribute("value");
+            string title = driver.FindElement(By.Name("title")).GetAttribute("value");
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
             string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
             string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
@@ -198,19 +210,41 @@ namespace WebAddressbookTests
             string email = driver.FindElement(By.Name("email")).GetAttribute("value");
             string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+            string homepage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
+            string birthdayDay = driver.FindElement(By.XPath("//select[@name='bday']")).GetAttribute("value");
+            string birthdayMonth = driver.FindElement(By.Name("//select[@name='bmonth']")).GetAttribute("value");
+            string birthdayYear = driver.FindElement(By.Name("//*[@id='content']//input[19]")).GetAttribute("value");
+            string anniversaryDay = driver.FindElement(By.XPath("//select[@name='aday']")).GetAttribute("value");
+            string anniversaryMonth = driver.FindElement(By.Name("//select[@name='amonth']")).GetAttribute("value");
+            string anniversaryYear = driver.FindElement(By.Name("//*[@id='content']//input[20]")).GetAttribute("value");
+
+
 
             return new ContactData(firstName)
             {
                 Lastname = lastName,
+                Middlename = middleName,
+                Nickname = nickName,
+                Company = company,
+                Title = title,
                 Address = address,
                 Home = homePhone,
                 Mobile = mobilePhone,
                 Work = workPhone,
+                Homepage = homepage,
+                Bday = birthdayDay,
+                Bmonth = birthdayMonth,
+                Byear = birthdayYear,
+                Aday = anniversaryDay,
+                Amonth = anniversaryMonth,
+                Ayear = anniversaryYear,
                 Email = email,
                 Email2 = email2,
                 Email3 = email3
             };
         }
+
+
 
         public ContactData GetContactInformationFromTable(int index)
         {
@@ -233,6 +267,41 @@ namespace WebAddressbookTests
             };
         }
 
+        public ContactData GetContactInformationFromViewForm(int index)
+        {
+            meneger.Navigator.GoToHomePage();
+            InitContactView(0);
+            string fml = driver.FindElement(By.XPath("//*[@id='content']/b")).Text;//done
+            string nickname = driver.FindElement(By.XPath("//*[@id='content']/text()[2]")).Text;//done
+            string title = driver.FindElement(By.XPath("//*[@id='content']/i[1]")).Text; //done
+            string company = driver.FindElement(By.XPath("//*[@id='content']/text()[3]")).Text; //done
+            string address = driver.FindElement(By.XPath("//*[@id='content']/text()[4]")).Text;
+            string homePhone = driver.FindElement(By.XPath("//*[@id='content']/text()[6]")).Text;
+            string mobilePhone = driver.FindElement(By.XPath("//*[@id='content']/text()[7]")).Text;
+            string workPhone = driver.FindElement(By.XPath("//*[@id='content']/text()[8]")).Text;
+            string fax = driver.FindElement(By.XPath("//*[@id='content']/text()[9]")).Text;
+            string email = driver.FindElement(By.XPath("//*[@id='content']/a[1]]")).Text;
+            string email2 = driver.FindElement(By.XPath("//*[@id='content']/a[2]")).Text;
+            string email3 = driver.FindElement(By.XPath("//*[@id='content']/a[2]")).Text;
+           
+
+            return new ContactData()
+            {
+                FML = fml,
+                Nickname = nickname,
+                Title = title,
+                Company = company,
+                Address = address,
+                Home = homePhone,
+                Mobile = mobilePhone,
+                Work = workPhone,
+                Fax = fax,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3
+            };
+        }
+
         public int GetNumberOfSearchResult()
         {
             meneger.Navigator.GoToHomePage();
@@ -240,5 +309,7 @@ namespace WebAddressbookTests
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
         }
+
+
     }
 }
