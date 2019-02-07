@@ -39,9 +39,10 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(fromView, fromForm);
             Assert.AreEqual(fromView.FML, fromForm.FML);
-            Assert.AreEqual(fromView.Nickname, fromForm.Nickname);
-            Assert.AreEqual(fromView.Title, fromForm.Title);
-            Assert.AreEqual(fromView.Company, fromForm.Company);
+            Assert.AreEqual(fromView.Address, fromForm.Address);
+            Assert.AreEqual(fromView.Home, fromForm.Home);
+            Assert.AreEqual(fromView.Mobile, fromForm.Mobile);
+            Assert.AreEqual(fromView.Work, fromForm.Company);
             // verifications
 
         }

@@ -10,7 +10,9 @@ namespace WebAddressbookTests
     //клас GroupData наследует IEquatable (его можно сравнивать с другими объектами типо GroupData)
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
-
+        public GroupData()
+        {
+        }
 
         public GroupData(string name)
         {
